@@ -1,15 +1,4 @@
-FROM python:2.7-alpine
-
-RUN apk update && apk upgrade && \
-    apk add \
-        gcc python python-dev py-pip \
-        # greenlet
-        musl-dev \
-        # sys/queue.h
-        bsd-compat-headers \
-        # event.h
-        libevent-dev \
-    && rm -rf /var/cache/apk/*
+FROM python:latest
 
 # want all dependencies first so that if it's just a code change, don't have to
 # rebuild as much of the container

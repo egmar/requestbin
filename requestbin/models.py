@@ -3,7 +3,6 @@ import json
 import time
 import datetime
 import os
-import re
 
 import msgpack
 
@@ -12,6 +11,7 @@ from .util import tinyid
 from .util import solid16x16gif_datauri
 
 from requestbin import config
+
 
 class Bin(object):
     max_requests = config.MAX_REQUESTS
@@ -55,7 +55,7 @@ class Bin(object):
     def add(self, request):
         self.requests.insert(0, Request(request))
         if len(self.requests) > self.max_requests:
-            for _ in xrange(self.max_requests, len(self.requests)):
+            for _ in range(self.max_requests, len(self.requests)):
                 self.requests.pop(self.max_requests)
 
 
@@ -93,7 +93,6 @@ class Request(object):
             if self.raw and len(self.raw) > self.max_raw_size:
                 self.raw = self.raw[0:self.max_raw_size]
 
-
     def to_dict(self):
         return dict(
             id=self.id,
@@ -120,10 +119,7 @@ class Request(object):
     @staticmethod
     def load(data):
         r = Request()
-        try:
-            r.__dict__ = msgpack.loads(data, encoding="utf-8")
-        except (UnicodeDecodeError):
-            r.__dict__ = msgpack.loads(data, encoding="ISO-8859-1")
+        r.__dict__ = msgpack.loads(data)
 
         return r
 
@@ -155,4 +151,3 @@ class Request(object):
     #         else:
     #             fields.append((k,v))
     #     return iter(sorted(fields) + sorted(files))
-

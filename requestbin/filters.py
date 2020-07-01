@@ -1,12 +1,10 @@
 import datetime
 from dateutil.parser import parse
-import hashlib
-import os
 import time
-import urllib
+
 
 def approximate_time(ts):
-    if not isinstance(ts, (int, long, float, complex)):
+    if not isinstance(ts, (int, float, complex)):
         return ""
 
     now = time.time()
@@ -44,11 +42,11 @@ def friendly_size(bytes):
 def status_class(status_code):
     status_code = str(status_code or "0")
     lookup = {
-        "0" : "",
-        "2" : "ok",
-        "3" : "info",
-        "4" : "warning",
-        "5" : "error"
+        "0": "",
+        "2": "ok",
+        "3": "info",
+        "4": "warning",
+        "5": "error"
     }
 
     return lookup.get(status_code[0], "")
@@ -71,20 +69,20 @@ def friendly_time(secs):
 
 
 def friendly_number(input):
-    if not isinstance(input, (int, long, float, complex)):
+    if not isinstance(input, (int, float, complex)):
         return ""
     return "{:,}".format(input)
 
 
 def exact_time(ts):
-    if not isinstance(ts, (int, long, float, complex)):
+    if not isinstance(ts, (int, float, complex)):
         return None
 
     return datetime.datetime.utcfromtimestamp(ts)
 
 
 def time_class(secs):
-    if not isinstance(secs, (int, long, float, complex)):
+    if not isinstance(secs, (int, float, complex)):
         return ""
 
     ms = secs * 1000.0
@@ -101,23 +99,23 @@ def to_qs(params_dict):
     if not params_dict or not isinstance(params_dict, dict):
         return ""
 
-    qs = u"?" if params_dict else u""
+    qs = "?" if params_dict else ""
 
-    for k, v in params_dict.items():
+    for k, v in list(params_dict.items()):
         if len(qs) > 1:  # more than just the ?
-            qs = qs + u"&"
+            qs = qs + "&"
         if v is None:
             qs = qs + k
         else:
-            qs = qs + u"{}={}".format(k, v)
+            qs = qs + "{}={}".format(k, v)
     return qs
 
     
 def short_date(input):
     dt = None
-    if isinstance(input, (str, unicode)):
+    if isinstance(input, str):
         dt = parse(input)
-    elif isinstance(input, (int, long, float, complex)):
+    elif isinstance(input, (int, float, complex)):
         dt = datetime.datetime.utcfromtimestamp(float(input))
     else:
         return ""
